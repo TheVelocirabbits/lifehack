@@ -15,23 +15,23 @@ router.post('/',
     res.status(200).send([])
   })
 
-  router.get('/user/:user',
-  apiController.getUser,
-  (req, res, next) => {
-    res.status(200).json(res.locals.data)
-  })
+router.post('/userlogin',
+userController.login,
+(req, res, next) => {
+  res.status(200).json(res.locals)
+})
 
-  router.post('/user',
-  apiController.makeUser, userController.create,
-  (req, res, next) => {
-    res.status(200).json(res.locals.data)
-  })
+router.post('/user',
+apiController.makeUser, userController.create,
+(req, res, next) => {
+  res.status(200).json(res.locals.data)
+})
 
-  router.patch('/user',
-  apiController.changeUsername, 
-  (req, res, next) => {
-    res.status(200).json(res.locals.data)
-  })
+router.patch('/user',
+apiController.changeUsername, 
+(req, res, next) => {
+  res.status(200).json(res.locals.data)
+})
 
 //** 404 handler **//
 router.use('*', (req, res) => {

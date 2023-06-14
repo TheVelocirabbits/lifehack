@@ -105,6 +105,24 @@ controller.getUser = (req, res, next) => {
       })
     })
 }
+/*controller.getUser = (req, res, next) => {
+  const name = req.params.user;
+  console.log('name in getUser', name)
+  const getUserQuery =  `SELECT id, username FROM users WHERE googlename = '${name}'`
+  db.query(getUserQuery)
+    .then(data => {
+      // console.log('data from getusers', data)
+      const {rows} = data
+      res.locals.data = rows
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.getUser:', ${err}`,
+        message: { err: 'Error occured in controller.getUser' }
+      })
+    })
+} */
 
 
 controller.changeUsername = (req, res, next) => {
