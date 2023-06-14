@@ -30,7 +30,7 @@ controller.getData = (req, res, next) => {
   db.query(categoryQuery)
     .then(data => {
       const { rows } = data
-      console.log('From Database: ', rows)
+      // console.log('From Database: ', rows)
       res.locals.data = rows
       return next()
     })
@@ -72,7 +72,7 @@ controller.makeUser = (req, res, next) => {
   SELECT * FROM users WHERE googlename = '${name}';`
   db.query(postUser)
     .then(data => {
-      // console.log('data in makeUser', data)
+      console.log('data in makeUser', data)
       const { rows } = data[1]
       // console.log('From Database: ', rows)
       res.locals.data = rows
