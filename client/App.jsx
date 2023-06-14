@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Login from './components/Login';
 import HackCreator from './components/HackCreator';
 import MainDisplay from './components/MainDisplay';
@@ -37,6 +37,7 @@ const App = () => {
   }
   function handleSignOut(event) {
     setUser({});
+    console.log(document.getElementById('signInDiv'));
     document.getElementById('signInDiv').hidden = false;
   }
   useEffect(() => {
@@ -56,7 +57,7 @@ const App = () => {
     const input = document.getElementById('login-account-input');
     const inputPassword = document.getElementById('login-account-password');
     const name = input.value;
-    const password = input.value;
+    const password = inputPassword.value;
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -68,10 +69,6 @@ const App = () => {
     input.value = '';
   }
 
-  //i think ur right, i think that works :))
-  // ok yaaay!
-  // idk how to test
-
   async function loginUser(e) {
     e.preventDefault();
     const input = document.getElementById('login-account-input');
@@ -79,6 +76,7 @@ const App = () => {
     const user = await response.json();
     setUser(user[0]);
     input.value = '';
+    document.getElementById('signInDiv').hidden = true;
   }
 
   async function changeDisplayName(e) {
@@ -101,41 +99,33 @@ const App = () => {
 
   return (
     <>
-      <Router>
-        {/* if user render sign in div */}
+      {/* <Router> */}
 
-        {!Object.keys(user).length && (
-          <>
-            <div id='signInDiv'></div>
-          </>
-        )}
-        {/* if user signed in render sign out & change display name*/}
-        {Object.keys(user).length !== 0 && (
-          <>
-            <h3>{user.username}</h3>
-            <button id='signOutBttn' onClick={(e) => handleSignOut(e)}>
-              Sign Out
-            </button>
-            <input id='change-displayname' />
-            <button id='change-displayname-bttn' onClick={changeDisplayName}>
-              Change Display Name
-            </button>
-          </>
-        )}
+      <div id='signInDiv'></div>
+      <h3 id='username-display'>{user.username}</h3>
 
-        {/* if user signed in render sign out & change display name*/}
-        {user && (
-          <div>
-            <img src={user.picture} />
-            <h3>{user.name}</h3>
-          </div>
-        )}
-        {/* render login, switch seems useless here */}
-        {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
-        {/* render main display and hack creator */}
-        <HackCreator user={user} />
-        <MainDisplay className='hack-items-container' />
-      </Router>
+      {/* if user signed in render sign out & change display name*/}
+      {Object.keys(user).length !== 0 && (
+        <>
+          <button id='signOutBttn' onClick={(e) => handleSignOut(e)}>
+            Sign Out
+          </button>
+        </>
+      )}
+
+      {/* if user signed in render sign out & change display name*/}
+      {user && (
+        <div>
+          <img src={user.picture} />
+          <h3>{user.name}</h3>
+        </div>
+      )}
+      {/* render login, switch seems useless here */}
+      {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
+      {/* render main display and hack creator */}
+      <HackCreator user={user} />
+      <MainDisplay className='hack-items-container' />
+      {/* </Router> */}
     </>
   );
 };
