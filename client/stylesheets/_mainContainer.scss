@@ -1,5 +1,3 @@
-@import '_login';
-
 * {
   margin: 0;
 }
@@ -23,26 +21,16 @@ h1 {
 .categories {
   border-radius: 5px;
   width: 10em;
-  height: 5em;
+  height: 2rem;
   font-size: 1.1rem;
   text-align: center;
-}
-
-.catselector {
-  border: 1px solid grey;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px grey;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.2em;
 }
 
 .aHack {
   border: 1px dotted grey;
   border-radius: 5px;
-  background-color: #CB416B;
-  box-shadow: 5px 5px 10px #CB416B;
+  background-color: #cb416b;
+  box-shadow: 5px 5px 10px #cb416b;
   width: 23%;
   height: 15%;
   display: flex;
@@ -57,14 +45,22 @@ h1 {
   font-weight: bolder;
 }
 
-
 .hack-items-container {
   // border: 30px solid black;
   // background-color: magenta;
+  border: 1px solid grey;
+  border-radius: 10px;
+  // height: 98%;
+  box-shadow: 5px 5px 10px grey;
   display: flex;
   // flex-wrap: wrap;
   flex-flow: row wrap;
-  width: 90%;
+  width: 98%;
   padding: 5px;
   margin: 5px;
+}
+
+.newHack {
+  height: 1.5rem;
+  width: 20rem;
 }
