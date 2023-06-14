@@ -53,17 +53,24 @@ const App = () => {
 
   async function makeUser(e) {
     e.preventDefault();
-    const input = document.getElementById('create-account-input');
+    const input = document.getElementById('login-account-input');
+    const inputPassword = document.getElementById('login-account-password');
     const name = input.value;
+    const password = input.value;
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, password }),
     };
+    console.log('name/password: ', name, password);
     const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
     setUser(newUser[0]);
     input.value = '';
   }
+
+  //i think ur right, i think that works :))
+  // ok yaaay!
+  // idk how to test
 
   async function loginUser(e) {
     e.preventDefault();
@@ -95,15 +102,17 @@ const App = () => {
   return (
     <>
       <Router>
-        <Route path='/test'>
-          <h1>test</h1>
-        </Route>
+        {/* if user render sign in div */}
 
-        <h3>{user.username}</h3>
-        <div id='signInDiv'></div>
-        {/* if user signed in render sign out & change display name*/}
-        {Object.keys(user).length != 0 && (
+        {!Object.keys(user).length && (
           <>
+            <div id='signInDiv'></div>
+          </>
+        )}
+        {/* if user signed in render sign out & change display name*/}
+        {Object.keys(user).length !== 0 && (
+          <>
+            <h3>{user.username}</h3>
             <button id='signOutBttn' onClick={(e) => handleSignOut(e)}>
               Sign Out
             </button>
@@ -122,7 +131,7 @@ const App = () => {
           </div>
         )}
         {/* render login, switch seems useless here */}
-        <Route path='/'>{!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}</Route>
+        {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
         {/* render main display and hack creator */}
         <HackCreator user={user} />
         <MainDisplay className='hack-items-container' />

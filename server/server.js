@@ -10,6 +10,4 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', apiRouter);
 
-// app.use('/*', (req, res) => res.send('../client/index.js'));
-
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));

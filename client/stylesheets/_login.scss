@@ -1,8 +1,8 @@
 .logins {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
   margin: 1em;
 }
 

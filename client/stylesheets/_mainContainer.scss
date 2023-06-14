@@ -60,7 +60,30 @@ h1 {
   margin: 5px;
 }
 
+.categorySelector {
+  display: flex;
+  justify-content: center;
+}
+
+.hackCreator {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
 .newHack {
   height: 1.5rem;
   width: 20rem;
+}
+
+.login-account-password {
+  width: 8rem;
+}
+
+.create-account-password {
+  width: 8rem;
+}
+
+.create-account-input {
+  width: 8rem;
 }
