@@ -54,9 +54,13 @@ const App = () => {
   async function makeUser(e) {
     e.preventDefault();
     const input = document.getElementById('login-account-input');
+    console.log('input name is', input)
     const inputPassword = document.getElementById('login-account-password');
+    console.log('inputPassword is', inputPassword);
     const name = input.value;
-    const password = input.value;
+    console.log('name is', name);
+    const password = inputPassword.value;
+    console.log('password is', password);
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

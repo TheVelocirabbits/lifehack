@@ -65,7 +65,7 @@ controller.makeHack = (req, res, next) => {
 // Post a new user to the database:
 controller.makeUser = (req, res, next) => {
   const {name, password} = req.body
-  // console.log('reqbody', req.body)
+  console.log('makeUser password', password)
   // console.log('name in makeuser', name)
   // A SELECT query is required after the INSERT query to actually return the new user
   const postUser = `INSERT INTO users (ID, googlename, username) VALUES (nextval(\'user_sequence\'),'${name}' ,'${name}');
@@ -97,7 +97,7 @@ controller.getUser = (req, res, next) => {
       const {rows} = data
       res.locals.data = rows
       return next();
-    }
+    })
     .catch((err) => {
       return next({
         log: `Error in controller.getUser:', ${err}`,
