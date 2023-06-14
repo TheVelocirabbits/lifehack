@@ -1,23 +1,64 @@
 import React, { useState } from 'react';
 
-const Hack = ({hacks}) => {
-  const { content, username, likes, dislikes } = hacks
+const Hack = ({ hacks }) => {
+  const { content, username, likes, dislikes } = hacks;
+
+  // save states for likes and dislikes
+  const [likesState, setLikesState] = useState(likes);
+  const [dislikesState, setDislikesState] = useState(likes);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+
+  // function to handle like clicks
+  const like = () => {
+    const loggedInUser = document.getElementById('username-display')?.innerText;
+    if (!loggedInUser) return;
+
+    if (!liked) {
+      setLikesState(likesState + 1);
+      setLiked(true);
+    }
+    if (disliked) {
+      setDislikesState(dislikesState - 1);
+      setDisliked(false);
+    }
+    // send info to server
+  };
+
+  // function to handle dislike clicks
+  const dislike = () => {
+    const loggedInUser = document.getElementById('username-display')?.innerText;
+    if (!loggedInUser) return;
+
+    if (!disliked) {
+      setDislikesState(dislikesState + 1);
+      setDisliked(true);
+    }
+    if (liked) {
+      setLikesState(likesState - 1);
+      setLiked(false);
+    }
+    // send info to server
+  };
 
   // creates individual hack boxes
-
   return (
-    <div className="aHack">
-      <h2><p>{content}</p></h2><br />
-      <p>Submitted by : <span className='username-hack'>{username}</span></p>
-      <button id="like" className="voteBtn">
+    <div className='aHack'>
+      <h2>
+        <p>{content}</p>
+      </h2>
+      <br />
+      <p>
+        Submitted by : <span className='username-hack'>{username}</span>
+      </p>
+      <button id='like' onClick={like} className='voteBtn'>
         Like
       </button>
-      <span>{likes}</span>
-      <button id="dislike" className="voteBtn">
-        
+      <span>{likesState}</span>
+      <button id='dislike' onClick={dislike} className='voteBtn'>
         Dislike
       </button>
-      <span>{dislikes}</span>
+      <span>{dislikesState}</span>
     </div>
   );
 };
