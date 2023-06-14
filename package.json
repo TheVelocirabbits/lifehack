@@ -11,18 +11,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Armora-Labs/lifehack.git"
+    "url": "git+https://github.com/TheVelocirabbits/lifehack.git"
   },
   "author": "Grant Thomas",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Armora-Labs/lifehack/issues"
+    "url": "https://github.com/TheVelocirabbits/lifehack/issues"
   },
-  "homepage": "https://github.com/Armora-Labs/lifehack#readme",
+  "homepage": "https://github.com/TheVelocirabbits/lifehack#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.20.2",
-    "cookie-parser": "^1.4.1",
+    "cookie-parser": "^1.4.6",
     "express": "^4.12.3",
     "express-session": "^1.13.0",
     "jwt-decode": "^3.1.2",

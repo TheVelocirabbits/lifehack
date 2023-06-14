@@ -12,7 +12,7 @@ const Login = ({ makeUser, loginUser }) => {
             type='text'
             placeholder='username'
           ></input>
-          <input className='login-account-password' name='password' type='password'></input>
+          <input id='login-account-password' name='password' type='password'></input>
           <input className='button' type='submit' value='Log in' onClick={loginUser}></input>
         </form>
       </div>

@@ -30,9 +30,15 @@ controller.getData = (req, res, next) => {
   db.query(categoryQuery)
     .then(data => {
       const { rows } = data
-      console.log('From Database: ', rows)
+      // console.log('From Database: ', rows)
       res.locals.data = rows
       return next()
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.getData:', ${err}`,
+        message: { err: 'Error occured in controller.getData' }
+      })
     })
 }
 
@@ -58,20 +64,27 @@ controller.makeHack = (req, res, next) => {
 
 // Post a new user to the database:
 controller.makeUser = (req, res, next) => {
-  const {name} = req.body
-  // console.log('reqbody', req.body)
+  const {name, password} = req.body
+  console.log('makeUser password', password)
   // console.log('name in makeuser', name)
   // A SELECT query is required after the INSERT query to actually return the new user
   const postUser = `INSERT INTO users (ID, googlename, username) VALUES (nextval(\'user_sequence\'),'${name}' ,'${name}');
   SELECT * FROM users WHERE googlename = '${name}';`
   db.query(postUser)
     .then(data => {
-      // console.log('data in makeUser', data)
+      console.log('data in makeUser', data)
       const { rows } = data[1]
       // console.log('From Database: ', rows)
       res.locals.data = rows
       return next()
     })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.makeHack:', ${err}`,
+        message: { err: 'Error occured in controller.makeHack' }
+      })
+    })
+   // .finally(() => {if (db) db.end()});
 }
 
 controller.getUser = (req, res, next) => {
@@ -84,8 +97,13 @@ controller.getUser = (req, res, next) => {
       const {rows} = data
       res.locals.data = rows
       return next();
-    }
-  )
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.getUser:', ${err}`,
+        message: { err: 'Error occured in controller.getUser' }
+      })
+    })
 }
 
 
@@ -103,6 +121,12 @@ controller.changeUsername = (req, res, next) => {
       // console.log('From Database: ', rows)
       res.locals.data = rows
       return next()
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.changeUsername:', ${err}`,
+        message: { err: 'Error occured in controller.changeUsername' }
+      })
     })
 }
 
