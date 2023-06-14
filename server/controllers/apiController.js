@@ -34,6 +34,12 @@ controller.getData = (req, res, next) => {
       res.locals.data = rows
       return next()
     })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.getData:', ${err}`,
+        message: { err: 'Error occured in controller.getData' }
+      })
+    })
 }
 
 // Post a new hack to the database:
@@ -58,7 +64,7 @@ controller.makeHack = (req, res, next) => {
 
 // Post a new user to the database:
 controller.makeUser = (req, res, next) => {
-  const {name} = req.body
+  const {name, password} = req.body
   // console.log('reqbody', req.body)
   // console.log('name in makeuser', name)
   // A SELECT query is required after the INSERT query to actually return the new user
@@ -72,6 +78,13 @@ controller.makeUser = (req, res, next) => {
       res.locals.data = rows
       return next()
     })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.makeHack:', ${err}`,
+        message: { err: 'Error occured in controller.makeHack' }
+      })
+    })
+   // .finally(() => {if (db) db.end()});
 }
 
 controller.getUser = (req, res, next) => {
@@ -84,8 +97,13 @@ controller.getUser = (req, res, next) => {
       const {rows} = data
       res.locals.data = rows
       return next();
-    }
-  )
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.getUser:', ${err}`,
+        message: { err: 'Error occured in controller.getUser' }
+      })
+    })
 }
 
 
@@ -103,6 +121,12 @@ controller.changeUsername = (req, res, next) => {
       // console.log('From Database: ', rows)
       res.locals.data = rows
       return next()
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in controller.changeUsername:', ${err}`,
+        message: { err: 'Error occured in controller.changeUsername' }
+      })
     })
 }
 
