@@ -67,6 +67,7 @@ const App = () => {
     const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
     setUser(newUser[0]);
     input.value = '';
+    document.getElementById('signInDiv').hidden = true;
   }
 
   async function loginUser(e) {
