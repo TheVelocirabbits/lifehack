@@ -71,11 +71,19 @@ const App = () => {
 
   async function loginUser(e) {
     e.preventDefault();
-    const input = document.getElementById('login-account-input');
-    const response = await fetch(`/api/user/${input.value}`);
+    // send data to server then update page
+    const usernameInput = document.getElementById('login-account-input');
+    const passwordInput = document.getElementById('login-account-password');
+    // const response = await fetch(`/api/user/${usernameInput.value}`);
+    const response = await fetch(`/api/userlogin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
+    });
     const user = await response.json();
     setUser(user[0]);
-    input.value = '';
+    usernameInput.value = '';
+    passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
   }
 
@@ -99,8 +107,6 @@ const App = () => {
 
   return (
     <>
-      {/* <Router> */}
-
       <div id='signInDiv'></div>
       <h3 id='username-display'>{user.username}</h3>
 
@@ -125,7 +131,6 @@ const App = () => {
       {/* render main display and hack creator */}
       <HackCreator user={user} />
       <MainDisplay className='hack-items-container' />
-      {/* </Router> */}
     </>
   );
 };
