@@ -97,7 +97,7 @@ controller.getUser = (req, res, next) => {
       const {rows} = data
       res.locals.data = rows
       return next();
-    })
+    }
     .catch((err) => {
       return next({
         log: `Error in controller.getUser:', ${err}`,

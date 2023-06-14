@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-const HackCreator = ({user}) => {
+const HackCreator = ({ user }) => {
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('Codesmith');
-
 
   // Event handler for add new hack form submission
   const handleFormSubmit = (event) => {
@@ -12,7 +11,7 @@ const HackCreator = ({user}) => {
     // console.log('content', content, 'category', category, 'user', u);
     // console.log('this is user', user)
     // console.log({ content, category, user });
-    const postData = { category, content, user: user.username};
+    const postData = { category, content, user: user.username };
     const addHack = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -27,29 +26,29 @@ const HackCreator = ({user}) => {
   const handleContentChange = (event) => setContent(event.target.value);
 
   return (
-    <div>
+    <div className='hackCreator'>
       <form onSubmit={handleFormSubmit}>
         <input
-          className="newHack"
-          name="newHack"
-          type="text"
+          className='newHack'
+          name='newHack'
+          type='text'
           value={content}
           onChange={handleContentChange}
-          placeholder="Add Hack"
+          placeholder='Add Hack'
         />
 
-        <label htmlFor="categories">Category:</label>
+        <label htmlFor='categories'>Category:</label>
         <select
-          id="categories"
-          name="categories"
+          id='categories'
+          name='categories'
           value={category}
           onChange={(event) => setCategory(event.target.value)}
         >
-          <option value="Codesmith">Codesmith</option>
-          <option value="Money">Money</option>
-          <option value="Time">Time</option>
+          <option value='Codesmith'>Codesmith</option>
+          <option value='Money'>Money</option>
+          <option value='Time'>Time</option>
         </select>
-        <button type="submit">Add hack</button>
+        <button type='submit'>Add hack</button>
       </form>
     </div>
   );
