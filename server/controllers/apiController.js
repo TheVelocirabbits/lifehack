@@ -30,7 +30,7 @@ controller.getData = (req, res, next) => {
   db.query(categoryQuery)
     .then(data => {
       const { rows } = data
-      console.log('From Database: ', rows)
+      // console.log('Line 33 from Database: ', rows)
       res.locals.data = rows
       return next()
     })
