@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-const HackCreator = ({ user, newHack, setNewHack }) => {
+const HackCreator = ({ user, newHack, setNewHack, category, setCategory }) => {
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('Codesmith');
 
   // Event handler for add new hack form submission
   const handleFormSubmit = (event) => {
@@ -10,6 +9,7 @@ const HackCreator = ({ user, newHack, setNewHack }) => {
 
     const u = user.username;
     if (u === undefined) return console.log('Error: Not Logged In');
+    // console.log(category, content);
     // setNewHack(undefined);
     // console.log('content', content, 'category', category, 'user', u);
     // console.log('this is user', user)
@@ -42,10 +42,10 @@ const HackCreator = ({ user, newHack, setNewHack }) => {
           type='text'
           value={content}
           onChange={handleContentChange}
-          placeholder='Add Hack'
+          placeholder='&nbsp;Add Hack'
         />
 
-        <label htmlFor='categories'></label>
+        {/* <label htmlFor='categories'></label>
         <select
           id='categories'
           name='categories'
@@ -55,8 +55,10 @@ const HackCreator = ({ user, newHack, setNewHack }) => {
           <option value='Codesmith'>Codesmith</option>
           <option value='Time'>Time</option>
           <option value='Money'>Money</option>{' '}
-        </select>
-        <button type='submit'>Add hack</button>
+        </select> */}
+        <button className='button' type='submit'>
+          Add hack
+        </button>
       </form>
     </div>
   );

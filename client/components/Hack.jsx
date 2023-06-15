@@ -72,7 +72,7 @@ const Hack = ({ hacks }) => {
         Like
       </button>
       <span>{likesState}</span>
-      <button id='dislike' onClick={dislike} className='voteBtn'>
+      <button className='button' id='dislike' onClick={dislike} className='voteBtn'>
         Dislike
       </button>
       <span>{dislikesState}</span>

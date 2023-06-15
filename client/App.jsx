@@ -10,6 +10,7 @@ import { set } from 'lodash';
 const App = () => {
   const [user, setUser] = useState({});
   const [newHack, setNewHack] = useState();
+  const [category, setCategory] = useState('Codesmith');
   // FOR GOOGLE OAUTH
   async function handleCallbackResponse(response) {
     const userObject = jwtDecode(response.credential);
@@ -56,12 +57,13 @@ const App = () => {
     e.preventDefault();
     const usernameInput = document.getElementById('login-account-input');
     const passwordInput = document.getElementById('login-account-password');
+    console.log(usernameInput.value, passwordInput.value);
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     };
-    console.log('name/password: ', name, password);
+    console.log(fetchProps);
     const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
     setUser(newUser[0]);
     usernameInput.value = '';
@@ -71,7 +73,6 @@ const App = () => {
 
   async function loginUser(e) {
     e.preventDefault();
-    console.log(e);
     // send data to server then update page
     const usernameInput = document.getElementById('login-account-input');
     const passwordInput = document.getElementById('login-account-password');
@@ -82,6 +83,7 @@ const App = () => {
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     });
     const user = await response.json();
+    console.log(user);
     setUser(user.username);
     usernameInput.value = '';
     passwordInput.value = '';
@@ -114,7 +116,7 @@ const App = () => {
       {/* if user signed in render sign out & change display name*/}
       {Object.keys(user).length !== 0 && (
         <>
-          <button id='signOutBttn' onClick={(e) => handleSignOut(e)}>
+          <button className='button' id='signOutBttn' onClick={(e) => handleSignOut(e)}>
             Sign Out
           </button>
         </>
@@ -130,8 +132,14 @@ const App = () => {
       {/* render login, switch seems useless here */}
       {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
       {/* render main display and hack creator */}
-      <HackCreator user={user} newHack={newHack} setNewHack={setNewHack} />
-      <MainDisplay className='hack-items-container' newHack={newHack} />
+      <HackCreator
+        user={user}
+        newHack={newHack}
+        setNewHack={setNewHack}
+        category={category}
+        setCategory={setCategory}
+      />
+      <MainDisplay className='hack-items-container' newHack={newHack} category={category} setCategory={setCategory} />
     </>
   );
 };

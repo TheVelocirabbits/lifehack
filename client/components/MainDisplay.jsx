@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import HackCreator from './HackCreator';
 import Hack from './Hack';
 
-const MainDisplay = ({ newHack }) => {
+const MainDisplay = ({ newHack, category, setCategory }) => {
   const [hacks, setHack] = useState([]);
-  const [category, setCategory] = useState('Codesmith');
 
   // Event handler for main category dropdown //
   const handleChange = (event) => {
@@ -12,7 +11,7 @@ const MainDisplay = ({ newHack }) => {
     event.preventDefault();
 
     setCategory(event.target.value);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   // GET request to SQL for specific category hacks //
@@ -20,7 +19,7 @@ const MainDisplay = ({ newHack }) => {
     try {
       const response = await fetch(`/api/${category}`);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setHack(data);
     } catch (err) {
       console.log(err);
@@ -34,7 +33,7 @@ const MainDisplay = ({ newHack }) => {
 
   const hackItems = [];
   for (let i = 0; i < hacks.length; i++) {
-    console.log(hacks[i]);
+    // console.log(hacks[i]);
     hackItems.push(<Hack hacks={hacks[i]} />);
   }
 
