@@ -9,7 +9,7 @@ import { set } from 'lodash';
 
 const App = () => {
   const [user, setUser] = useState({});
-
+  const [newHack, setNewHack] = useState();
   // FOR GOOGLE OAUTH
   async function handleCallbackResponse(response) {
     const userObject = jwtDecode(response.credential);
@@ -54,26 +54,24 @@ const App = () => {
 
   async function makeUser(e) {
     e.preventDefault();
-    const input = document.getElementById('login-account-input');
-    console.log('input name is', input);
-    const inputPassword = document.getElementById('login-account-password');
-    console.log('inputPassword is', inputPassword);
-    const name = input.value;
-    const password = inputPassword.value;
+    const usernameInput = document.getElementById('login-account-input');
+    const passwordInput = document.getElementById('login-account-password');
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     };
     console.log('name/password: ', name, password);
     const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
     setUser(newUser[0]);
-    input.value = '';
+    usernameInput.value = '';
+    passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
   }
 
   async function loginUser(e) {
     e.preventDefault();
+    console.log(e);
     // send data to server then update page
     const usernameInput = document.getElementById('login-account-input');
     const passwordInput = document.getElementById('login-account-password');
@@ -132,8 +130,8 @@ const App = () => {
       {/* render login, switch seems useless here */}
       {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
       {/* render main display and hack creator */}
-      <HackCreator user={user} />
-      <MainDisplay className='hack-items-container' />
+      <HackCreator user={user} newHack={newHack} setNewHack={setNewHack} />
+      <MainDisplay className='hack-items-container' newHack={newHack} />
     </>
   );
 };

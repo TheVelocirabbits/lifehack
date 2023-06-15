@@ -22,7 +22,13 @@ const Hack = ({ hacks }) => {
       setDislikesState(dislikesState - 1);
       setDisliked(false);
     }
+    console.log(hacks.id);
     // send info to server
+    // fetch('api/like', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({username: loggedInUser, hackId: hacks.id}),
+    // })
   };
 
   // function to handle dislike clicks
@@ -39,6 +45,17 @@ const Hack = ({ hacks }) => {
       setLiked(false);
     }
     // send info to server
+  };
+
+  // allows deleting of cards
+  const deleteHack = () => {
+    const loggedInUser = document.getElementById('username-display')?.innerText;
+    if (!loggedInUser) return;
+
+    if (loggedInUser !== hack.username) {
+      return 'Error, you did not create this hack';
+    } else {
+    }
   };
 
   // creates individual hack boxes
