@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const apiController = require('../controllers/apiController');
 const userController = require('../controllers/userController');
+const sessionController = require('../controllers/sessionController');
 
 router.get('/:category',
   apiController.getData,
@@ -14,15 +15,15 @@ router.post('/',
   (req, res, next) => {
     res.status(200).send([])
   })
-
+//Add the sessionController.startSession middleware
 router.post('/userlogin',
 userController.login,
 (req, res, next) => {
   res.status(200).json(res.locals)
 })
-
+//Add the sessionController.startSession middleware
 router.post('/user',
-apiController.makeUser, userController.create,
+apiController.makeUser, userController.create, sessionController.startSession,
 (req, res, next) => {
   res.status(200).json(res.locals.data)
 })
