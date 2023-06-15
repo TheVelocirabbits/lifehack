@@ -15,6 +15,7 @@ h1 {
 h3 {
   padding-bottom: 1em;
   padding-left: 0.5em;
+  color: white;
 }
 
 .gsignin {
@@ -38,6 +39,7 @@ h3 {
   // background-color: rgba(250, 250, 250, 0.7);
   // box-shadow: 5px 5px 10px whitesmoke;
   width: 18%;
+  min-width: 10rem;
   height: 15%;
   display: flex;
   flex-direction: column;
@@ -114,9 +116,12 @@ h3 {
   color: #fff;
   background-color: rgb(88, 101, 242);
   transition: background-color 0.17s ease, color 0.17s ease;
-  :hover {
-    background-color: rgb(71, 82, 196);
-  }
+}
+.button:hover {
+  background-color: #284db3;
+}
+[hidden] {
+  display: none !important;
 }
 
 input {
@@ -139,4 +144,9 @@ input {
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
   }
+}
+
+.deleteHackContainer {
+  display: flex;
+  justify-content: end;
 }

@@ -29,6 +29,8 @@ const HackCreator = ({ user, newHack, setNewHack, category, setCategory }) => {
         console.log(newHack);
       })
       .catch((err) => console.log('Error ', err));
+
+    setContent('');
   };
 
   const handleContentChange = (event) => setContent(event.target.value);

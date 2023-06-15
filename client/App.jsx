@@ -11,7 +11,23 @@ const App = () => {
   const [user, setUser] = useState({});
   const [newHack, setNewHack] = useState();
   const [category, setCategory] = useState('Codesmith');
+  //successful login function
+
+  function tempAlert(msg, duration) {
+    let el = document.createElement('div');
+    el.setAttribute(
+      'style',
+      'position:absolute;top:15%;left:45%;color:white; background-color:rgb(88, 101, 242);width:10em; height: 1.5em; display: flex; justify-content:center; align-items:center; border-radius: 5px; '
+    );
+    el.innerHTML = msg;
+    setTimeout(function () {
+      el.parentNode.removeChild(el);
+    }, duration);
+    document.body.appendChild(el);
+  }
+
   // FOR GOOGLE OAUTH
+
   async function handleCallbackResponse(response) {
     const userObject = jwtDecode(response.credential);
     const googlename = userObject.name;
@@ -41,6 +57,7 @@ const App = () => {
     console.log(document.getElementById('signInDiv'));
     document.getElementById('signInDiv').hidden = false;
   }
+
   useEffect(() => {
     // These google objects came from a script tag which can be found in index.html
     /* global google */
@@ -87,8 +104,11 @@ const App = () => {
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     });
     const user = await response.json();
+    if (user.authentication !== true) {
+      return alert('Incorrect username or password. Please try again.');
+    }
+    tempAlert('Login Successful...', 4000);
     setUser(user);
-    console.log('91', user);
     usernameInput.value = '';
     passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;

@@ -24,11 +24,11 @@ const Hack = ({ hacks }) => {
     }
     console.log(hacks.id);
     // send info to server
-    // fetch('api/like', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({username: loggedInUser, hackId: hacks.id}),
-    // })
+    fetch('api/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: loggedInUser, hackId: hacks.id }),
+    });
   };
 
   // function to handle dislike clicks
@@ -45,16 +45,30 @@ const Hack = ({ hacks }) => {
       setLiked(false);
     }
     // send info to server
+    fetch('api/dislike', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: loggedInUser, hackId: hacks.id }),
+    });
   };
 
   // allows deleting of cards
-  const deleteHack = () => {
+  const deleteHack = async () => {
+    // const hack = document.getElementsByClassName('aHack')
     const loggedInUser = document.getElementById('username-display')?.innerText;
-    if (!loggedInUser) return;
+    if (!loggedInUser) return alert('Please Log-In to delete hacks');
 
-    if (loggedInUser !== hack.username) {
-      return 'Error, you did not create this hack';
+    if (loggedInUser !== hacks.username) {
+      console.log(hacks._id);
+      return alert('You did not create this hack.');
     } else {
+      console.log(hacks.id);
+      const response = await fetch(`/api/deleteHack`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: hacks.id }),
+      });
+      console.log(response);
     }
   };
 
@@ -76,6 +90,11 @@ const Hack = ({ hacks }) => {
         Dislike
       </button>
       <span>{dislikesState}</span>
+      <div className='deleteHackContainer'>
+        <button className='deleteHack' onClick={deleteHack}>
+          Delete Hack
+        </button>
+      </div>
     </div>
   );
 };

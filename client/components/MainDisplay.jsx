@@ -34,7 +34,7 @@ const MainDisplay = ({ newHack, category, setCategory }) => {
   const hackItems = [];
   for (let i = 0; i < hacks.length; i++) {
     // console.log(hacks[i]);
-    hackItems.push(<Hack hacks={hacks[i]} />);
+    hackItems.push(<Hack hacks={hacks[i]} key={i} />);
   }
 
   // console.log('hacks', hacks);

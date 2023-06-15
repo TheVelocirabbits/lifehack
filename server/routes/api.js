@@ -15,6 +15,10 @@ router.post('/',
     res.status(200).send([])
   })
 
+router.delete('/deleteHack', apiController.deleteHack, (req, res, next) => {
+  res.status(200).send('Hack Deleted')
+})
+
 router.post('/userlogin',
 userController.login,
 (req, res, next) => {
