@@ -12,6 +12,11 @@ h1 {
   text-align: center;
 }
 
+h3 {
+  padding-bottom: 1em;
+  padding-left: 0.5em;
+}
+
 .gsignin {
   display: flex;
   align-items: center;
@@ -94,7 +99,6 @@ h1 {
 }
 
 .button {
-  display: inline-block;
   outline: none;
   cursor: pointer;
   margin: 0.15em;
@@ -125,7 +129,7 @@ input {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  appearance: none;
+  // appearance: none;
   border-radius: 4px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   :focus {

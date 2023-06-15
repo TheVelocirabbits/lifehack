@@ -63,9 +63,13 @@ const App = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     };
-    console.log(fetchProps);
-    const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
-    setUser(newUser[0]);
+    // const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
+    const newUser = await fetch('/api/user', fetchProps);
+    const complete = await newUser.json();
+    setUser(complete[0]);
+
+    // console.log('user: ', userData);
+    // console.log('user state: ', user);
     usernameInput.value = '';
     passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
@@ -83,8 +87,8 @@ const App = () => {
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     });
     const user = await response.json();
-    console.log(user);
-    setUser(user.username);
+    setUser(user);
+    console.log('91', user);
     usernameInput.value = '';
     passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
@@ -111,7 +115,7 @@ const App = () => {
   return (
     <>
       <div id='signInDiv'></div>
-      <h3 id='username-display'></h3>
+      <h3 id='username-display'>{user.username}</h3>
 
       {/* if user signed in render sign out & change display name*/}
       {Object.keys(user).length !== 0 && (
@@ -126,7 +130,7 @@ const App = () => {
       {user && (
         <div>
           <img src={user.picture} />
-          <h3>{user.name}</h3>
+          {/* <h3>{user.username}</h3> */}
         </div>
       )}
       {/* render login, switch seems useless here */}
