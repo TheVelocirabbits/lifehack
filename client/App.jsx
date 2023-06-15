@@ -82,7 +82,7 @@ const App = () => {
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     });
     const user = await response.json();
-    setUser(user[0]);
+    setUser(user.username);
     usernameInput.value = '';
     passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
@@ -109,7 +109,7 @@ const App = () => {
   return (
     <>
       <div id='signInDiv'></div>
-      <h3 id='username-display'>{user.username}</h3>
+      <h3 id='username-display'></h3>
 
       {/* if user signed in render sign out & change display name*/}
       {Object.keys(user).length !== 0 && (
