@@ -22,7 +22,13 @@ const Hack = ({ hacks }) => {
       setDislikesState(dislikesState - 1);
       setDisliked(false);
     }
+    console.log(hacks.id);
     // send info to server
+    fetch('api/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: loggedInUser, hackId: hacks.id }),
+    });
   };
 
   // function to handle dislike clicks
@@ -39,6 +45,31 @@ const Hack = ({ hacks }) => {
       setLiked(false);
     }
     // send info to server
+    fetch('api/dislike', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: loggedInUser, hackId: hacks.id }),
+    });
+  };
+
+  // allows deleting of cards
+  const deleteHack = async () => {
+    // const hack = document.getElementsByClassName('aHack')
+    const loggedInUser = document.getElementById('username-display')?.innerText;
+    if (!loggedInUser) return alert('Please Log-In to delete hacks');
+
+    if (loggedInUser !== hacks.username) {
+      console.log(hacks._id);
+      return alert('You did not create this hack.');
+    } else {
+      console.log(hacks.id);
+      const response = await fetch(`/api/deleteHack`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: hacks.id }),
+      });
+      console.log(response);
+    }
   };
 
   // creates individual hack boxes
@@ -55,10 +86,15 @@ const Hack = ({ hacks }) => {
         Like
       </button>
       <span>{likesState}</span>
-      <button id='dislike' onClick={dislike} className='voteBtn'>
+      <button className='button' id='dislike' onClick={dislike} className='voteBtn'>
         Dislike
       </button>
       <span>{dislikesState}</span>
+      <div className='deleteHackContainer'>
+        <button className='deleteHack' onClick={deleteHack}>
+          Delete Hack
+        </button>
+      </div>
     </div>
   );
 };

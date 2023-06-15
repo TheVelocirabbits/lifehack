@@ -2,25 +2,24 @@ import React, { useState, useEffect } from 'react';
 import HackCreator from './HackCreator';
 import Hack from './Hack';
 
-const MainDisplay = () => {
+const MainDisplay = ({ newHack, category, setCategory }) => {
   const [hacks, setHack] = useState([]);
-  const [value, setValue] = useState('');
 
   // Event handler for main category dropdown //
   const handleChange = (event) => {
     console.log('category has been changed');
     event.preventDefault();
 
-    setValue(event.target.value);
-    console.log(event.target.value);
+    setCategory(event.target.value);
+    // console.log(event.target.value);
   };
 
   // GET request to SQL for specific category hacks //
   async function getHacks() {
     try {
-      const response = await fetch(`/api/${value}`);
+      const response = await fetch(`/api/${category}`);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setHack(data);
     } catch (err) {
       console.log(err);
@@ -30,11 +29,12 @@ const MainDisplay = () => {
   // Trigger for page rerender once Category change is detected. //
   useEffect(() => {
     getHacks();
-  }, [value]);
+  }, [category, newHack]);
 
   const hackItems = [];
   for (let i = 0; i < hacks.length; i++) {
-    hackItems.push(<Hack hacks={hacks[i]} />);
+    // console.log(hacks[i]);
+    hackItems.push(<Hack hacks={hacks[i]} key={i} />);
   }
 
   // console.log('hacks', hacks);
@@ -45,8 +45,8 @@ const MainDisplay = () => {
     return (
       <>
         <label>
-          <select value={value} onChange={handleChange} className='categories'>
-            <option>Categories</option>
+          <select value={category} onChange={handleChange} className='categories'>
+            <optgroup label='Categories' />
             <option value='Codesmith'>CodeSmith</option>
             <option value='Time'>Time</option>
             <option value='Money'>Money</option>
