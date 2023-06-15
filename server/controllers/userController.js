@@ -29,6 +29,8 @@ userController.create = (req, res, next) => {
 
 userController.login = (req, res, next) => {
   const { name, password } = req.body;
+  console.log(`This is the name: ${name}, and password: ${password} from req.body`)
+  //need to refactor to stop the error from being sent, instead send a response back to frontend
   if (!name || !password) {
     return next({
       log: `Error in userController.login, please enter username and password:', ${err}`,
@@ -36,31 +38,32 @@ userController.login = (req, res, next) => {
     });
   }
   //query database for hashed password of passed in username
-  const query = `SELECT hashedpassword
+  const query = `SELECT *
   FROM users  
   WHERE username = '${name}';`
   db.query(query)
-  .then((data) => {
-  bcrypt
-  .compare(password,data)
+  .then((data) => { 
+    res.locals.username = data.rows[0].username;
+    return data.rows[0].hashedpassword
+  })
+  .then((hash) => {
+    //console.log('This is the res.locals info', res.locals.userinfo);
+    return bcrypt.compare(password,hash);
   })
   .then((result) => {
-      if (result){
-        return next();
-      }
-      else{
-        //Discuss with Niko and Jordan what to do if password is wrong, and redirect or response accordingly
-        return next();
-      }
+    console.log('This is the result of querying the database for bcrypst comparison result', result);
+    res.locals.authentication = result;
+    console.log('this is res.locals: ', res.locals)
+    return next();
     })
-    .catch((err) => {
-      return next(
-        {
-          log: `Error in userController.login:', ${err}`,
-          message: { err: 'Error occured in userController.login' }
-        }
-      );
-    })
+  .catch((err) => {
+    return next(
+      {
+        log: `Error in userController.login:', ${err}`,
+        message: { err: 'Error occured in userController.login' }
+      }
+    );
+  })
   };
 
 module.exports = userController;
