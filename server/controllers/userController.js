@@ -43,6 +43,8 @@ userController.login = (req, res, next) => {
   WHERE username = '${name}';`
   db.query(query)
   .then((data) => { 
+    //Send username to frontend
+    console.log('Data.rows from db.query on log in', data);
     res.locals.username = data.rows[0].username;
     return data.rows[0].hashedpassword
   })
@@ -51,9 +53,10 @@ userController.login = (req, res, next) => {
     return bcrypt.compare(password,hash);
   })
   .then((result) => {
-    console.log('This is the result of querying the database for bcrypst comparison result', result);
+    //console.log('This is the result of querying the database for bcrypst comparison result', result);
+    //Send authentication status to frontend
     res.locals.authentication = result;
-    console.log('this is res.locals: ', res.locals)
+    //console.log('this is res.locals: ', res.locals)
     return next();
     })
   .catch((err) => {

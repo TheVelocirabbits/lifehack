@@ -1,16 +1,17 @@
 const express = require('express');
 const path = require('path');
 const apiRouter = require('./routes/api');
+const mongoose = require('mongoose');
 
-const MONGO_URI = 'our URI';
+const MONGO_URI = 'mongodb+srv://fpena213:laaaalfq545MWQOv@lifehx.wyphoaz.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI, {
     useNewURLParser: true,
     useUnifiedTopology: true,
-    dbName: 'our db name'
+    dbName: 'lifehacks' //LifeHxSessions
 });
 
-mongoose.connect.once('open', () => {
+mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
 
