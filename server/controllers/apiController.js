@@ -1,11 +1,10 @@
-const db = require('../models/models')
+const db = require('../models/models');
 
-const controller = {}
+const controller = {};
 
 
 // Get data from the database:
 controller.getData = (req, res, next) => {
-
   console.log('Category: ', req.params);
   const category = req.params.category;
 
@@ -18,7 +17,7 @@ controller.getData = (req, res, next) => {
   FROM hacks h INNER JOIN users u 
   ON u.ID = h.user_id
   INNER JOIN Categories C
-  ON C.ID = h.category_id;`
+  ON C.ID = h.category_id;`;
 
   // SQL query string to return all categories in database:
   const categoryQuery = `SELECT h.ID, h.content, h.likes, h.dislikes, u.username, C.Name AS category 
@@ -26,28 +25,29 @@ controller.getData = (req, res, next) => {
   ON u.ID = h.user_id
   INNER JOIN Categories C
   ON C.ID = h.category_id
-  WHERE C.Name = '${category}';`
+  WHERE C.Name = '${category}';`;
 
   db.query(categoryQuery)
-    .then(data => {
-      const { rows } = data
+    .then((data) => {
+      const { rows } = data;
       // console.log('From Database: ', rows)
-      res.locals.data = rows
-      return next()
+      res.locals.data = rows;
+      return next();
     })
     .catch((err) => {
       return next({
         log: `Error in controller.getData:', ${err}`,
-        message: { err: 'Error occured in controller.getData' }
-      })
-    })
-}
+        message: { err: 'Error occured in controller.getData' },
+      });
+    });
+};
 
 // Post a new hack to the database:
 
 controller.makeHack = (req, res, next) => {
   // console.log(req)
   // console.log(req.body)
+
   // if (res.locals.isLoggedIn){
     const { category, content, user } = req.body
     console.log('Category: ', category, ' Content: ', content, ' User: ', user)
@@ -68,50 +68,53 @@ controller.makeHack = (req, res, next) => {
   // }
 }
 
+
 // Post a new user to the database:
 controller.makeUser = (req, res, next) => {
-  const {name, password} = req.body
-  console.log('makeUser password', password)
+  const { name, password } = req.body;
+  console.log('makeUser password', password);
   // console.log('name in makeuser', name)
   // A SELECT query is required after the INSERT query to actually return the new user
   const postUser = `INSERT INTO users (ID, googlename, username) VALUES (nextval(\'user_sequence\'),'${name}' ,'${name}');
-  SELECT * FROM users WHERE googlename = '${name}';`
+  SELECT * FROM users WHERE googlename = '${name}';`;
   db.query(postUser)
-    .then(data => {
-      console.log('data in makeUser', data)
-      const { rows } = data[1]
+    .then((data) => {
+      console.log('data in makeUser', data);
+      const { rows } = data[1];
       // console.log('From Database: ', rows)
+
       res.locals.data = rows
       res.locals.username = rows[0].username;
       return next()
+
     })
     .catch((err) => {
       return next({
         log: `Error in controller.makeHack:', ${err}`,
-        message: { err: 'Error occured in controller.makeHack' }
-      })
-    })
-   // .finally(() => {if (db) db.end()});
-}
+        message: { err: 'Error occured in controller.makeHack' },
+      });
+    });
+  // .finally(() => {if (db) db.end()});
+};
 
 controller.getUser = (req, res, next) => {
   const name = req.params.user;
-  console.log('name in getUser', name)
-  const getUserQuery =  `SELECT id, username FROM users WHERE googlename = '${name}'`
+  // console.log('name in getUser', name);
+  const getUserQuery = `SELECT id, username FROM users WHERE googlename = '${name}'`;
   db.query(getUserQuery)
-    .then(data => {
+    .then((data) => {
       // console.log('data from getusers', data)
-      const {rows} = data
-      res.locals.data = rows
+      const { rows } = data;
+      res.locals.data = rows;
       return next();
     })
     .catch((err) => {
       return next({
         log: `Error in controller.getUser:', ${err}`,
-        message: { err: 'Error occured in controller.getUser' }
-      })
-    })
-}
+        message: { err: 'Error occured in controller.getUser' },
+      });
+    });
+};
 /*controller.getUser = (req, res, next) => {
   const name = req.params.user;
   console.log('name in getUser', name)
@@ -131,35 +134,30 @@ controller.getUser = (req, res, next) => {
     })
 } */
 
-
 controller.changeUsername = (req, res, next) => {
-  const {newUsername} = req.body
-  const {id} = req.body
+  const { newUsername } = req.body;
+  const { id } = req.body;
   // console.log('reqbody', req.body)
   // A SELECT query is required after the INSERT query to actually return the new user
   const postUser = `UPDATE users SET username = '${newUsername}' WHERE ID = ${id};
-  SELECT * FROM users WHERE ID = ${id};`
+  SELECT * FROM users WHERE ID = ${id};`;
   db.query(postUser)
-    .then(data => {
+    .then((data) => {
       // console.log('data in makeUser', data)
-      const { rows } = data[1]
+      const { rows } = data[1];
       // console.log('From Database: ', rows)
-      res.locals.data = rows
-      return next()
+      res.locals.data = rows;
+      return next();
     })
     .catch((err) => {
       return next({
         log: `Error in controller.changeUsername:', ${err}`,
-        message: { err: 'Error occured in controller.changeUsername' }
-      })
-    })
-}
+        message: { err: 'Error occured in controller.changeUsername' },
+      });
+    });
+};
 
-
-
-module.exports = controller
-
-
+module.exports = controller;
 
 /* Syntax for creating a new sql sequence in the terminal */
 // CREATE SEQUENCE user_sequence

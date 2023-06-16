@@ -27,6 +27,7 @@ router.post('/',
   })
 //Add the sessionController.startSession middleware
 router.post('/userlogin', userController.login,
+=======
 (req, res, next) => {
   res.status(200).json(res.locals)
 })

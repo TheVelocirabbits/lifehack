@@ -9,8 +9,25 @@ import { set } from 'lodash';
 
 const App = () => {
   const [user, setUser] = useState({});
+  const [newHack, setNewHack] = useState();
+  const [category, setCategory] = useState('Codesmith');
+  //successful login function
+
+  function tempAlert(msg, duration) {
+    let el = document.createElement('div');
+    el.setAttribute(
+      'style',
+      'position:absolute;top:15%;left:45%;color:white; background-color:rgb(88, 101, 242);width:10em; height: 1.5em; display: flex; justify-content:center; align-items:center; border-radius: 5px; '
+    );
+    el.innerHTML = msg;
+    setTimeout(function () {
+      el.parentNode.removeChild(el);
+    }, duration);
+    document.body.appendChild(el);
+  }
 
   // FOR GOOGLE OAUTH
+
   async function handleCallbackResponse(response) {
     const userObject = jwtDecode(response.credential);
     const googlename = userObject.name;
@@ -40,6 +57,7 @@ const App = () => {
     //console.log(document.getElementById('signInDiv'));
     document.getElementById('signInDiv').hidden = false;
   }
+
   useEffect(() => {
     // These google objects came from a script tag which can be found in index.html
     /* global google */
@@ -54,21 +72,23 @@ const App = () => {
 
   async function makeUser(e) {
     e.preventDefault();
-    const input = document.getElementById('login-account-input');
-    console.log('input name is', input);
-    const inputPassword = document.getElementById('login-account-password');
-    console.log('inputPassword is', inputPassword);
-    const name = input.value;
-    const password = inputPassword.value;
+    const usernameInput = document.getElementById('login-account-input');
+    const passwordInput = document.getElementById('login-account-password');
+    console.log(usernameInput.value, passwordInput.value);
     const fetchProps = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     };
-    console.log('name/password: ', name, password);
-    const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
-    setUser(newUser[0]);
-    input.value = '';
+    // const newUser = await fetch('/api/user', fetchProps).then((ans) => ans.json());
+    const newUser = await fetch('/api/user', fetchProps);
+    const complete = await newUser.json();
+    setUser(complete[0]);
+
+    // console.log('user: ', userData);
+    // console.log('user state: ', user);
+    usernameInput.value = '';
+    passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
   }
 
@@ -84,7 +104,11 @@ const App = () => {
       body: JSON.stringify({ name: usernameInput.value, password: passwordInput.value }),
     });
     const user = await response.json();
-    setUser(user.username);
+    if (user.authentication !== true) {
+      return alert('Incorrect username or password. Please try again.');
+    }
+    tempAlert('Login Successful...', 4000);
+    setUser(user);
     usernameInput.value = '';
     passwordInput.value = '';
     document.getElementById('signInDiv').hidden = true;
@@ -111,12 +135,12 @@ const App = () => {
   return (
     <>
       <div id='signInDiv'></div>
-      <h3 id='username-display'></h3>
+      <h3 id='username-display'>{user.username}</h3>
 
       {/* if user signed in render sign out & change display name*/}
       {Object.keys(user).length !== 0 && (
         <>
-          <button id='signOutBttn' onClick={(e) => handleSignOut(e)}>
+          <button className='button' id='signOutBttn' onClick={(e) => handleSignOut(e)}>
             Sign Out
           </button>
         </>
@@ -126,14 +150,20 @@ const App = () => {
       {user && (
         <div>
           <img src={user.picture} />
-          <h3>{user.name}</h3>
+          {/* <h3>{user.username}</h3> */}
         </div>
       )}
       {/* render login, switch seems useless here */}
       {!Object.keys(user).length && <Login makeUser={makeUser} loginUser={loginUser} />}
       {/* render main display and hack creator */}
-      <HackCreator user={user} />
-      <MainDisplay className='hack-items-container' />
+      <HackCreator
+        user={user}
+        newHack={newHack}
+        setNewHack={setNewHack}
+        category={category}
+        setCategory={setCategory}
+      />
+      <MainDisplay className='hack-items-container' newHack={newHack} category={category} setCategory={setCategory} />
     </>
   );
 };
