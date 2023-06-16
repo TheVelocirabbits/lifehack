@@ -54,7 +54,7 @@ const App = () => {
   }
   function handleSignOut(event) {
     setUser({});
-    console.log(document.getElementById('signInDiv'));
+    //console.log(document.getElementById('signInDiv'));
     document.getElementById('signInDiv').hidden = false;
   }
 

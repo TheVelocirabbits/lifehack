@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const apiController = require('../controllers/apiController');
 const userController = require('../controllers/userController');
+const sessionController = require('../controllers/sessionController');
+const cookieController= require('../controllers/cookieController');
+
+
+// parse cookies
+const cookieParser = require('cookie-parser')
+router.use(cookieParser());
+
+router.get('/', (req, res) => {
+  return res.status(200).send(res.locals.cookie);
+})
 
 router.get('/:category',
   apiController.getData,
@@ -9,24 +20,20 @@ router.get('/:category',
     res.status(200).json(res.locals.data)
   })
 
-router.post('/',
-  apiController.makeHack,
+router.post('/', 
+  apiController.makeHack, 
   (req, res, next) => {
     res.status(200).send([])
   })
-
-router.delete('/deleteHack', apiController.deleteHack, (req, res, next) => {
-  res.status(200).send('Hack Deleted')
-})
-
-router.post('/userlogin',
-userController.login,
+//Add the sessionController.startSession middleware
+router.post('/userlogin', userController.login,
+=======
 (req, res, next) => {
   res.status(200).json(res.locals)
 })
-
+//Add the sessionController.startSession middleware
 router.post('/user',
-apiController.makeUser, userController.create,
+apiController.makeUser, userController.create, sessionController.startSession, cookieController.setSSIDCookie,
 (req, res, next) => {
   res.status(200).json(res.locals.data)
 })

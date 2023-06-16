@@ -2,6 +2,7 @@ const db = require('../models/models');
 
 const controller = {};
 
+
 // Get data from the database:
 controller.getData = (req, res, next) => {
   console.log('Category: ', req.params);
@@ -46,19 +47,27 @@ controller.getData = (req, res, next) => {
 controller.makeHack = (req, res, next) => {
   // console.log(req)
   // console.log(req.body)
-  const { category, content, user } = req.body;
-  // console.log('Category: ', category, ' Content: ', content, ' User: ', user)
 
-  // nextval is a method that generates the next primary key, pass it the sequence name
-  const postHack = `INSERT INTO hacks (ID, content, likes, dislikes, user_id, category_id) VALUES (nextval('hack_sequence'), '${content}', 0,0, (SELECT ID FROM users WHERE username = '${user}'), (SELECT ID FROM Categories WHERE Name = '${category}'));`;
+  // if (res.locals.isLoggedIn){
+    const { category, content, user } = req.body
+    console.log('Category: ', category, ' Content: ', content, ' User: ', user)
+  
+    // nextval is a method that generates the next primary key, pass it the sequence name
+    const postHack = `INSERT INTO hacks (ID, content, likes, dislikes, user_id, category_id) VALUES (nextval('hack_sequence'), '${content}', 0,0, (SELECT ID FROM users WHERE username = '${user}'), (SELECT ID FROM Categories WHERE Name = '${category}'));`
+  
+    db.query(postHack)
+      .then(data => {
+        const { rows } = data
+        // console.log('From Database: ', rows)
+        res.locals.data = rows
+        return next()
+      })
+  // }
+  // else{
+  //   return next()
+  // }
+}
 
-  db.query(postHack).then((data) => {
-    const { rows } = data;
-    // console.log('From Database: ', rows)
-    res.locals.data = rows;
-    return next();
-  });
-};
 
 // Post a new user to the database:
 controller.makeUser = (req, res, next) => {
@@ -73,8 +82,11 @@ controller.makeUser = (req, res, next) => {
       console.log('data in makeUser', data);
       const { rows } = data[1];
       // console.log('From Database: ', rows)
-      res.locals.data = rows;
-      return next();
+
+      res.locals.data = rows
+      res.locals.username = rows[0].username;
+      return next()
+
     })
     .catch((err) => {
       return next({
